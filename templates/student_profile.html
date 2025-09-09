@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update Profile</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <header>
+        <h1>Update Profile</h1>
+    </header>
+    <main>
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <div class="flash">{{ messages[0] }}</div>
+            {% endif %}
+        {% endwith %}
+        <form method="POST" enctype="multipart/form-data">
+            <label for="name">Full Name:</label>
+            <input type="text" id="name" name="name" value="{{ profile.name if profile else '' }}" required>
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" value="{{ profile.email if profile else '' }}" required>
+            <label for="phone">Phone:</label>
+            <input type="text" id="phone" name="phone" value="{{ profile.phone if profile else '' }}" required>
+            <label for="resume">Upload Resume (PDF):</label>
+            <input type="file" id="resume" name="resume" accept=".pdf">
+            <button type="submit">Save Profile</button>
+        </form>
+        <a href="{{ url_for('student_dashboard') }}">Back to Dashboard</a>
+    </main>
+</body>
+</html>

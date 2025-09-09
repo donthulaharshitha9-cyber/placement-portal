@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <header>
+        <h1>Student Dashboard</h1>
+        <nav>
+            <a href="{{ url_for('student_profile') }}">Update Profile</a>
+            <a href="{{ url_for('logout') }}">Logout</a>
+        </nav>
+    </header>
+    <main>
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <div class="flash">{{ messages[0] }}</div>
+            {% endif %}
+        {% endwith %}
+        <h2>Profile Information</h2>
+        {% if profile %}
+            <p>Name: {{ profile.name }}</p>
+            <p>Email: {{ profile.email }}</p>
+            <p>Phone: {{ profile.phone }}</p>
+            <p>Resume: {% if profile.resume %}<a href="{{ url_for('static', filename=profile.resume) }}" target="_blank">View Resume</a>{% else %}Not uploaded{% endif %}</p>
+        {% else %}
+            <p>No profile information available. Please update your profile.</p>
+        {% endif %}
+        <h2>Available Jobs</h2>
+        <ul>
+            {% for job in jobs %}
+                <li>{{ job.title }} - {{ job.company }}: {{ job.description }} <a href="{{ url_for('apply_job', job_id=job.id) }}">Apply</a></li>
+            {% endfor %}
+        </ul>
+        <h2>Your Applications</h2>
+        <ul>
+            {% for application in applications %}
+                <li>Job: {{ application.job.title }} - Status: {{ application.status }}</li>
+            {% endfor %}
+        </ul>
+    </main>
+</body>
+</html>
